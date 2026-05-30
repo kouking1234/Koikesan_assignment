@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>理解度テスト｜ただしイケメンに限る</title>
+<style>
+:root{--bg:#faf9f7;--surface:#fff;--surface2:#f4f3f0;--border:rgba(0,0,0,.1);--border2:rgba(0,0,0,.18);--text:#1a1917;--text2:#6b6860;--text3:#9e9c98;--purple:#534AB7;--pl:#EEEDFE;--pd:#3C3489;--pt:#26215C;--green:#0F6E56;--gl:#E1F5EE;--gt:#04342C;--red:#A32D2D;--rl:#FCEBEB;--rt:#501313;--amber:#854F0B;--al:#FAEEDA;--at:#412402}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0 0 80px}
+.header{background:var(--surface);border-bottom:.5px solid var(--border);padding:20px 20px 16px;position:sticky;top:0;z-index:10}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--purple);text-transform:uppercase;margin-bottom:4px}
+.htitle{font-size:17px;font-weight:700;margin-bottom:10px}
+.prog-bg{height:3px;background:var(--surface2);border-radius:2px}
+.prog-fill{height:3px;background:var(--purple);border-radius:2px;transition:width .4s}
+.prog-lbl{font-size:12px;color:var(--text3);margin-top:6px;text-align:right}
+.main{max-width:640px;margin:0 auto;padding:0 16px}
+.stag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.05em;color:var(--pt);background:var(--pl);padding:3px 10px;border-radius:20px;margin:28px 0 14px}
+.stag.e{color:var(--at);background:var(--al)}
+.qcard{background:var(--surface);border:.5px solid var(--border);border-radius:14px;padding:20px;margin-bottom:12px}
+.qnum{font-size:11px;font-weight:600;color:var(--text3);margin-bottom:8px}
+.qtxt{font-size:15px;font-weight:600;line-height:1.65;margin-bottom:16px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border:.5px solid var(--border);border-radius:10px;cursor:pointer;background:var(--bg);transition:border-color .15s,background .15s;-webkit-tap-highlight-color:transparent}
+.opt:hover{border-color:var(--border2);background:var(--surface2)}
+.opt.sel{border-color:var(--purple);background:var(--pl)}
+.opt.ok{border-color:var(--green);background:var(--gl)}
+.opt.ng{border-color:var(--red);background:var(--rl)}
+.opt.sc{border-color:var(--green);background:var(--gl)}
+.okey{flex-shrink:0;width:24px;height:24px;border-radius:50%;border:.5px solid var(--border2);background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--text2);margin-top:1px}
+.opt.sel .okey{background:var(--purple);border-color:var(--purple);color:#fff}
+.opt.ok .okey{background:var(--green);border-color:var(--green);color:#fff}
+.opt.ng .okey{background:var(--red);border-color:var(--red);color:#fff}
+.opt.sc .okey{background:var(--green);border-color:var(--green);color:#fff}
+.otxt{font-size:14px;line-height:1.55;padding-top:2px}
+.opt.sel .otxt{color:var(--pt);font-weight:500}
+.opt.ok .otxt{color:var(--gt);font-weight:500}
+.opt.ng .otxt{color:var(--rt)}
+.opt.sc .otxt{color:var(--gt);font-weight:500}
+.expl{display:none;margin-top:12px;padding:12px 14px;background:var(--surface2);border-radius:10px;border-left:3px solid var(--purple)}
+.expl.on{display:block}
+.explbl{font-size:11px;font-weight:700;color:var(--purple);letter-spacing:.05em;margin-bottom:5px}
+.extxt{font-size:13px;line-height:1.7;color:var(--text2)}
+textarea.etxt{width:100%;min-height:120px;padding:12px 14px;border:.5px solid var(--border2);border-radius:10px;font-family:inherit;font-size:14px;line-height:1.7;color:var(--text);background:var(--bg);resize:vertical;transition:border-color .15s}
+textarea.etxt:focus{outline:none;border-color:var(--purple)}
+textarea.etxt:disabled{opacity:.6}
+.enote{font-size:12px;color:var(--text3);margin-top:6px}
+.aibtn{display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;background:var(--purple);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s;font-family:inherit;margin-top:12px}
+.aibtn:hover{background:var(--pd)}
+.aibtn:disabled{background:var(--text3);cursor:not-allowed}
+.aibox{display:none;margin-top:10px;padding:14px;border-radius:10px;border:.5px solid var(--border);background:var(--surface2)}
+.aibox.on{display:block}
+.aihdr{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.badge{font-size:13px;font-weight:700;padding:3px 10px;border-radius:20px}
+.bs{background:var(--gl);color:var(--gt)}.ba{background:var(--gl);color:#0F6E56}.bb{background:var(--al);color:var(--at)}.bc{background:var(--rl);color:var(--rt)}
+.aicmt{font-size:13px;line-height:1.75;color:var(--text2)}
+.spin-wrap{font-size:13px;color:var(--text3);display:flex;align-items:center;gap:6px}
+.spinner{width:14px;height:14px;border:2px solid var(--border2);border-top-color:var(--purple);border-radius:50%;animation:sp .8s linear infinite;flex-shrink:0}
+@keyframes sp{to{transform:rotate(360deg)}}
+.subwrap{padding:28px 16px 0;max-width:640px;margin:0 auto}
+.subbtn{width:100%;padding:16px;background:var(--purple);color:#fff;font-size:16px;font-weight:700;border:none;border-radius:12px;cursor:pointer;letter-spacing:.03em;transition:background .15s,transform .1s;font-family:inherit}
+.subbtn:hover{background:var(--pd)}
+.subbtn:active{transform:scale(.98)}
+.subbtn:disabled{background:var(--text3);cursor:not-allowed}
+#rs{display:none}
+.rhero{text-align:center;padding:40px 20px 28px;max-width:640px;margin:0 auto}
+.sring{width:120px;height:120px;margin:0 auto 20px;position:relative}
+.sring svg{transform:rotate(-90deg)}
+.snum{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:26px;font-weight:800;color:var(--purple);line-height:1;text-align:center}
+.slbl{font-size:11px;color:var(--text3);margin-top:3px}
+.rmsg{font-size:20px;font-weight:700;margin-bottom:8px}
+.rsub{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:24px}
+.rgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;max-width:640px;margin:0 auto 24px;padding:0 16px}
+.rcell{background:var(--surface);border:.5px solid var(--border);border-radius:8px;padding:8px 4px;text-align:center}
+.rn{font-size:11px;color:var(--text3);margin-bottom:3px}
+.rm{font-size:16px}
+.rbtn{display:block;width:calc(100% - 32px);max-width:640px;margin:0 auto;padding:14px;background:transparent;color:var(--purple);font-size:15px;font-weight:600;border:1.5px solid var(--purple);border-radius:12px;cursor:pointer;text-align:center;transition:background .15s;font-family:inherit}
+.rbtn:hover{background:var(--pl)}
+</style>
+</head>
+<body>
+<div id="qs">
+  <div class="header">
+    <div class="eyebrow">理解度テスト</div>
+    <div class="htitle">ただしイケメンに限る の事実</div>
+    <div class="prog-bg"><div class="prog-fill" id="pf" style="width:3%"></div></div>
+    <div class="prog-lbl" id="pl">0 / 23 問回答済み</div>
+  </div>
+  <div class="main" id="qc"></div>
+  <div class="subwrap"><button class="subbtn" id="sb" onclick="submit()" disabled>採点する（あと23問）</button></div>
+</div>
+
+<div id="rs">
+  <div class="rhero">
+    <div class="sring">
+      <svg width="120" height="120" viewBox="0 0 120 120">
+        <circle cx="60" cy="60" r="50" fill="none" stroke="#EEEDFE" stroke-width="10"/>
+        <circle cx="60" cy="60" r="50" fill="none" stroke="#534AB7" stroke-width="10" stroke-dasharray="314" stroke-dashoffset="314" stroke-linecap="round" id="rc"/>
+      </svg>
+      <div class="snum"><span id="sn">0</span><div class="slbl">/ 20</div></div>
+    </div>
+    <div class="rmsg" id="rm"></div>
+    <div class="rsub" id="rsb"></div>
+  </div>
+  <div class="rgrid" id="rg"></div>
+  <button class="rbtn" onclick="retry()">もう一度チャレンジする</button>
+  <div class="main" id="rvc" style="margin-top:32px"></div>
+</div>
+
+<script>
+const MC=[
+  {s:"第1部：慈悲的差別と魅力の正体",q:"問1：「慈悲的差別（benevolent sexism）」の具体的な行動例としてソースに挙げられているものはどれですか？",opts:["女性に男性と同じ重労働を割り当てる","女性のコートを預かったり、車の扉を開けたりする","女性の昇進を実力のみで判断する","デートの費用を完全に折半にする"],ans:1,exp:"慈悲的差別の典型例は「コートを預かる」「扉を開ける」など一見紳士的な行動。根底には「女性は守られるべき存在」という前提がある。"},
+  {s:"第1部：慈悲的差別と魅力の正体",q:"問2：フェミニズム的なイデオロギーを内面化している女性であっても、慈悲的差別を行う男性をどう感じるとされていますか？",opts:["思想の敵として激しく軽蔑する","魅力的だと感じてしまう","全く何も感じない","自分の権利を侵害されていると即座に気づく"],ans:1,exp:"フェミニスト的な価値観を持つ女性でも、慈悲的差別を行う男性に「魅力」を感じてしまう。これが資料の示す矛盾点の核心。"},
+  {s:"第1部：慈悲的差別と魅力の正体",q:"問3：慈悲的差別とはどのような前提に基づいた「甘やかし」であると説明されていますか？",opts:["女性を男性よりも優れた存在と見なすこと","女性を男性と完全に対等な存在と見なすこと","女性を男性よりも一段劣った存在と見なすこと","女性を社会のリーダーとして育成すること"],ans:2,exp:"慈悲的差別の前提は「女性は男性より一段劣った存在」。だからこそ「守ってあげる」という甘やかしが成立する。"},
+  {s:"第1部：慈悲的差別と魅力の正体",q:"問4：統計的に裏付けられた「不都合な真実」が女性の直感的理解に反してしまう主な理由は何ですか？",opts:["統計データ自体が間違っているから","女性には、魅力的な男性の性差別的言動を検出できなくなる認知的フレームワークがあるから","現代の女性は教育水準が高すぎるから","男性が女性の前で完璧に自分を偽っているから"],ans:1,exp:"女性の脳には「魅力的な男性の性差別的言動を差別と認識しにくくする」認知的フレームワークが存在する。これが「不都合な真実」を見えにくくする。"},
+  {s:"第1部：慈悲的差別と魅力の正体",q:"問5：「暴力的な傾向が強い男性」に関する研究結果として言及されている事実はどれですか？",opts:["結婚生活が長く続く傾向にある","社会的な成功を収めやすい","セックスパートナーが多い","知能指数が非常に高い"],ans:2,exp:"研究によると、暴力的傾向の強い男性はセックスパートナーが多い傾向にある。「悪い男がモテる」という現象の統計的裏付け。"},
+  {s:"第2部：認知的バイアスと再解釈",q:"問6：魅力的な男性が横暴な振る舞いをした際、女性はそれをどのように「再解釈」するとされていますか？",opts:["「自分への攻撃」と捉え、警察に通報する","「頼もしさ」「男らしさ」として肯定的に評価する","「育ちの悪さ」として冷ややかに見る","「ストレスが溜まっているのだ」と論理的に分析する"],ans:1,exp:"魅力的な男性の横暴さは「頼もしさ」「男らしさ」と再解釈される。誰がやるかによって受け取られ方が180度変わる。"},
+  {s:"第2部：認知的バイアスと再解釈",q:"問7：性的魅力の高い男性による抑圧的な振る舞いは、女性にどう認識されやすいですか？",opts:["女性蔑視や暴力だと認識されにくい","即座に差別として告発される","男性全体の評価を下げる原因として嫌われる","知的な戦略であると高く評価される"],ans:0,exp:"高スペック・イケメン男性の抑圧的行動は、女性蔑視や暴力として認識されにくい。これが「ただしイケメンに限る」の本質。"},
+  {s:"第2部：認知的バイアスと再解釈",q:"問8：「EVIL相互関係」と表現されているのはどのような現象ですか？",opts:["男女が互いに憎しみ合い、社会が崩壊すること","モテる男が女性蔑視的になり、女性蔑視的な男がモテるという関係","非モテ男性がフェミニストを攻撃し続けること","権力者が弱者を搾取し続ける経済的構造"],ans:1,exp:"EVIL相互関係とは「モテる男ほど女性蔑視的になり、女性蔑視的な男ほどモテる」という循環構造のこと。"},
+  {s:"第2部：認知的バイアスと再解釈",q:"問9：性的魅力と「人間的な善性」をイコールで結びつけて考えるバイアスについて、ソースはどう述べていますか？",opts:["男性に顕著に見られるバイアスである","女性にきわめて顕著に見られるバイアスである","高齢者にのみ見られる古い価値観である","科学的に正しい判断基準である"],ans:1,exp:"「魅力的＝善い人」というバイアスは女性に特に強く見られる。これが認知的フレームワークの一部をなしている。"},
+  {s:"第2部：認知的バイアスと再解釈",q:"問10：魅力的な男性が加害行為をした際に女性が行う「責任転嫁」とはどのようなものですか？",opts:["「社会の構造が悪い」と主張する","「被害者にも落ち度があった」と主張する","「あいつは本当はモテ男ではなく非モテだったのだ」と言い換える","「自分も共犯だ」と名乗り出る"],ans:2,exp:"魅力的な男性が加害した場合、「実はあいつはモテ男じゃなかった」と事後的に再定義することで、自分の判断ミスを回避しようとする。"},
+  {s:"第3部：非モテと男女平等の現実",q:"問11：性的魅力の低い男性（非モテ）がわずかでも差別的な言動をした場合、女性はどう反応しますか？",opts:["相手に興味がないので聞き流す","ポジティブに再解釈してあげる","激しい嫌悪感と怒りを抱く","優しく教育し直そうとする"],ans:2,exp:"非モテ男性のわずかな差別的言動に対しては、再解釈モジュールが作動せず、激しい嫌悪・怒りが生じる。"},
+  {s:"第3部：非モテと男女平等の現実",q:"問12：慶応大卒イケメンのわいせつ事件と、引きこもりオタクの二次元イラストへの反応の差は何によって説明されますか？",opts:["犯罪の法的な重さの差","性的魅力が加害評価の絶対値を歪めてしまう効力","メディアの報道の仕方の違い","教育背景の有無"],ans:1,exp:"法的には前者のほうが重大なはずだが、性的魅力の差によって加害評価の絶対値が歪む。「ただしイケメンに限る」の具体例。"},
+  {s:"第3部：非モテと男女平等の現実",q:"問13：本当の意味で「男女平等」を実践し、女性を特別扱いしない男性は女性からどう評価される傾向にありますか？",opts:["「誠実で素晴らしい人」と絶賛される","「冷たい人」「女ぎらい」などと陰口を叩かれる","恋愛対象として最も人気が出る","会社のリーダーとして推薦される"],ans:1,exp:"真の男女平等を実践すると、慈悲的差別がないため「冷たい」「女嫌い」と評される皮肉な現実がある。"},
+  {s:"第3部：非モテと男女平等の現実",q:"問14：女性を神聖視し、人格を尊重しようとする「やさしい非モテ男」について、ソースはどう評していますか？",opts:["最終的には報われる存在である","「正しい」がゆえに女にモテず、キモがられるという現実を見れていない","現代社会において最も必要な人材である","女性から密かに尊敬されている"],ans:1,exp:"やさしい非モテは「正しい」が、その正しさゆえに現実の女性心理と噛み合わず、モテない・キモがられるという残酷な構造がある。"},
+  {s:"第3部：非モテと男女平等の現実",q:"問15：非モテ男性が「いつか自分のやさしさに気づいてくれる」と信じていることを、ソースは何と呼んでいますか？",opts:["崇高な理想","捨てきれない幻想","確実な未来","騎士道精神"],ans:1,exp:"「いつか気づいてくれる」という信念はソースでは「捨てきれない幻想」と呼ばれている。モテ男はこの幻想を捨てた人たちだ。"},
+  {s:"第4部：具体例と結論",q:"問16：刺青があり女性に暴力を振るうような男たちの周囲にはどのような状況がありましたか？",opts:["女性が一人も寄り付かなかった","常に彼らを熱心に愛する女性が一人以上いた","警察が常に監視していた","男性同士で集まり、女性を排除していた"],ans:1,exp:"荒くれ者の周囲には、常に彼らを愛する女性が存在した。これが理論の現実での裏付けとして紹介されている。"},
+  {s:"第4部：具体例と結論",q:"問17：犯罪を繰り返す荒くれ者の帰りを待つ女性たちは、彼らのことをどう表現していましたか？",opts:["「本当はいい人。誤解されやすいだけ」","「お金をくれるから仕方がなく」","「恐怖で支配されているだけ」","「いつか改心してくれると信じている」"],ans:0,exp:"「本当はいい人、誤解されやすいだけ」という言葉は、認知的フレームワークによる典型的な再解釈の実例。"},
+  {s:"第4部：具体例と結論",q:"問18：「EVIL四段活用」の4番目、非モテに関する記述として正しいものはどれですか？",opts:["非モテは無害であれば女性から好かれる","非モテは女性への性欲を持っているだけで「加害行為」と認識されることがある","非モテは努力次第で慈悲的差別を使いこなせる","非モテの存在は女性の社会進出を助けている"],ans:1,exp:"EVIL四段活用の非モテ段階では、性欲を持つだけで加害者扱いされうる。性的魅力の有無が評価の非対称性を生む極端な例。"},
+  {s:"第4部：具体例と結論",q:"問19：モテ男になっていく男性は、女性に対してどのような認識を持つに至った人たちですか？",opts:["女性は無謬で神聖な存在であるという認識","女性は特定の認知的フレームワークを備えた生物であるという認識","女性は論理的で知的な存在であるという認識","女性は教育によって変えられるという認識"],ans:1,exp:"モテ男は女性を「神聖な存在」ではなく、「認知的フレームワークを持つ生物」と捉えている。現実直視が出発点。"},
+  {s:"第4部：具体例と結論",q:"問20：「※ただしイケメンに限る」の真相として、ソースが提示している結論は何ですか？",opts:["外見さえ良ければ性格はどうでも良いという意味","性的魅力が、性差別や加害行為の評価をポジティブに歪めてしまうという仕組み","美形は遺伝子的に優れているという事実","イケメンは法律によって守られているという風刺"],ans:1,exp:"「ただしイケメンに限る」の本質は、性的魅力が差別・加害行為の評価をポジティブに歪めるメカニズム。単なる外見の話ではない。"}
+];
+
+const ESSAY=[
+  {s:"記述式問題",q:"記述式・問1：「慈悲的差別（benevolent sexism）」の定義と、それが女性にどのように受け取られるかについて説明してください。具体的な行動例と、なぜ「男女平等」の観点から問題視されつつも魅力的に映るのかという矛盾点に触れて記述してください。",
+   model:"慈悲的差別とは、女性のコートを預かったり車の扉を開けたりするような一見親切な行動だが、その根底には「女性は守られるべき一段劣った存在である」という認識がある行動を指す。これは真の男女平等とは言い難いが、女性にとっては非常に心地よく魅力的に感じられるため、たとえフェミニズム的な思想を持つ女性であっても、このような振る舞いをする男性に惹かれてしまうという矛盾が生じる。",
+   pts:"①慈悲的差別の定義（女性を劣った存在と見なす前提）②具体的な行動例の記述③矛盾点（問題視されつつも魅力的に映る理由）"},
+  {s:"記述式問題",q:"記述式・問2：性的魅力の高い男性（モテる男）と低い男性（非モテ）が、同じように性差別的な言動や振る舞いをした場合、女性の認識にはどのような違いが生じると述べられていますか。「認知的フレームワーク」や「再解釈」という言葉を用いて、そのメカニズムを説明してください。",
+   model:"性的魅力の高い男性の場合、女性には「魅力的な相手の差別的言動を検出できなくなる」という認知的フレームワークが働くため、その言動を「頼もしさ」や「男らしさ」として肯定的に再解釈する。一方、性的魅力の低い男性に対しては再解釈モジュールが作動せず、わずかな差別的言動にも激しい嫌悪感や怒りを抱くという非対称な違いが生じる。",
+   pts:"①「認知的フレームワーク」という語の正確な使用②「再解釈」の具体的な内容③モテ・非モテの評価の非対称性"},
+  {s:"記述式問題",q:"記述式・問3：ソースの筆者が結論として述べている、「モテ男」になっていく男性たちが共通して気づく「女性に対する認識」とはどのようなものですか。「やさしい非モテ」が抱きがちな幻想と比較して、簡潔に記述してください。",
+   model:"モテ男になる者たちは、女性を「無謬で神聖な存在」として神格化するのをやめ、女性もまた特定の認知的フレームワークを備えた生物であるという現実に気づいている。彼らは「やさしさや誠実さを持ち続ければいつか気づいてくれる」という非モテ特有の幻想を捨て、現実直視と試行錯誤を通じて女性の性質を理解した者たちである。",
+   pts:"①モテ男の女性観（認知的フレームワークを持つ生物）②非モテの幻想（やさしさへの期待）との対比③現実直視という方向性"}
+];
+
+const KEYS=["A","B","C","D"];
+const TOTAL=MC.length+ESSAY.length;
+let mca=new Array(MC.length).fill(null);
+let esa=new Array(ESSAY.length).fill("");
+let done=false;
+
+function answered(){return mca.filter(a=>a!==null).length+esa.filter(a=>a.trim().length>10).length}
+
+function upd(){
+  const n=answered();
+  const pct=Math.max(3,Math.round(n/TOTAL*100));
+  document.getElementById("pf").style.width=pct+"%";
+  document.getElementById("pl").textContent=n+" / "+TOTAL+" 問回答済み";
+  const btn=document.getElementById("sb");
+  const rem=TOTAL-n;
+  btn.disabled=n<TOTAL;
+  btn.textContent=n<TOTAL?"採点する（あと"+rem+"問）":"採点する ✓";
+}
+
+function build(){
+  const c=document.getElementById("qc");
+  c.innerHTML="";
+  let ls="";
+  MC.forEach((q,qi)=>{
+    if(q.s!==ls){const t=document.createElement("div");t.className="stag";t.textContent=q.s;c.appendChild(t);ls=q.s;}
+    const d=document.createElement("div");d.className="qcard";d.id="mc"+qi;
+    d.innerHTML=`<div class="qnum">問 ${qi+1}</div><div class="qtxt">${q.q}</div><div class="opts" id="o${qi}">${q.opts.map((o,oi)=>`<div class="opt" id="o${qi}_${oi}" onclick="pick(${qi},${oi})"><span class="okey">${KEYS[oi]}</span><span class="otxt">${o}</span></div>`).join("")}</div><div class="expl" id="ex${qi}"><div class="explbl">📖 解説</div><div class="extxt">${q.exp}</div></div>`;
+    c.appendChild(d);
+  });
+  ESSAY.forEach((q,ei)=>{
+    if(q.s!==ls){const t=document.createElement("div");t.className="stag e";t.textContent=q.s;c.appendChild(t);ls=q.s;}
+    const d=document.createElement("div");d.className="qcard";d.id="es"+ei;
+    d.innerHTML=`<div class="qnum">記述式 問 ${ei+1}</div><div class="qtxt">${q.q}</div><textarea class="etxt" id="et${ei}" placeholder="ここに回答を記述してください..." oninput="ei_input(${ei})"></textarea><div class="enote">※10文字以上で回答済み扱い</div><button class="aibtn" id="ab${ei}" onclick="score_essay(${ei})" disabled>✦ AIに採点してもらう</button><div class="aibox" id="ar${ei}"></div>`;
+    c.appendChild(d);
+  });
+  upd();
+}
+
+function pick(qi,oi){
+  if(done)return;
+  mca[qi]=oi;
+  MC[qi].opts.forEach((_,i)=>document.getElementById("o"+qi+"_"+i).className="opt"+(i===oi?" sel":""));
+  upd();
+}
+
+function ei_input(ei){
+  esa[ei]=document.getElementById("et"+ei).value;
+  document.getElementById("ab"+ei).disabled=esa[ei].trim().length<10;
+  upd();
+}
+
+async function score_essay(ei){
+  const ans=esa[ei].trim();
+  if(!ans)return;
+  const btn=document.getElementById("ab"+ei);
+  const box=document.getElementById("ar"+ei);
+  btn.disabled=true;
+  box.className="aibox on";
+  box.innerHTML='<div class="spin-wrap"><div class="spinner"></div>採点中...</div>';
+  const q=ESSAY[ei];
+  const prompt=`あなたは恋愛心理・女性心理の講師です。以下の記述式問題に対するクライアントの回答を採点してください。
+
+【問題】${q.q}
+【模範解答】${q.model}
+【採点のポイント】${q.pts}
+【クライアントの回答】${ans}
+
+以下のJSON形式のみで返してください（バッククォートや前置き不要）：
+{"grade":"S/A/B/C","score":"例：18/20点","comment":"2〜3文で具体的なフィードバック。良かった点と改善点を日本語で。"}
+
+gradeの基準：S=模範解答と同等以上、A=主要ポイントを押さえている、B=部分的に正しいが不足あり、C=重要なポイントが欠けている`;
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:400,messages:[{role:"user",content:prompt}]})});
+    const data=await res.json();
+    const txt=data.content[0].text.trim().replace(/```json|```/g,"");
+    const p=JSON.parse(txt);
+    const gc={S:"bs",A:"ba",B:"bb",C:"bc"}[p.grade]||"bb";
+    box.innerHTML=`<div class="aihdr"><span class="badge ${gc}">評価：${p.grade}　${p.score}</span></div><div class="aicmt">${p.comment}</div>`;
+    btn.textContent="✦ 再採点する";btn.disabled=false;
+  }catch(e){
+    box.innerHTML='<div class="aicmt" style="color:var(--red)">エラーが発生しました。もう一度お試しください。</div>';
+    btn.disabled=false;btn.textContent="✦ AIに採点してもらう";
+  }
+}
+
+function submit(){
+  done=true;
+  let sc=0;
+  MC.forEach((q,qi)=>{
+    const ua=mca[qi];
+    MC[qi].opts.forEach((_,oi)=>{
+      const el=document.getElementById("o"+qi+"_"+oi);
+      el.className="opt";
+      if(oi===q.ans&&oi===ua){el.classList.add("ok");sc++;}
+      else if(oi===ua){el.classList.add("ng");}
+      else if(oi===q.ans){el.classList.add("sc");}
+    });
+    document.getElementById("ex"+qi).classList.add("on");
+  });
+  ESSAY.forEach((_,ei)=>document.getElementById("et"+ei).disabled=true);
+  showResult(sc);
+}
+
+function showResult(sc){
+  document.getElementById("qs").style.display="none";
+  document.getElementById("rs").style.display="block";
+  window.scrollTo(0,0);
+  document.getElementById("sn").textContent=sc;
+  document.getElementById("rc").style.strokeDashoffset=314*(1-sc/MC.length);
+  const msgs=sc>=18?["選択式は完璧です！","記述式のAI採点も確認してみましょう。"]:sc>=14?["よく理解できています！","間違えた問題の解説をもう一度確認しましょう。"]:sc>=10?["基本は押さえています。","解説を見ながら、誤解しやすい箇所を整理しましょう。"]:["もう一度資料を読み直しましょう。","解説を参考に各概念を整理してください。"];
+  document.getElementById("rm").textContent=msgs[0];
+  document.getElementById("rsb").textContent=msgs[1];
+  const rg=document.getElementById("rg");rg.innerHTML="";
+  MC.forEach((q,qi)=>{const c=document.createElement("div");c.className="rcell";c.innerHTML=`<div class="rn">問${qi+1}</div><div class="rm">${mca[qi]===q.ans?"✅":"❌"}</div>`;rg.appendChild(c);});
+  const rv=document.getElementById("rvc");rv.innerHTML=`<div style="font-size:15px;font-weight:700;margin-bottom:16px;padding:0 0 12px;border-bottom:.5px solid var(--border)">選択式：解答の見直し</div>`;
+  let ls="";
+  MC.forEach((q,qi)=>{
+    if(q.s!==ls){const t=document.createElement("div");t.className="stag";t.textContent=q.s;rv.appendChild(t);ls=q.s;}
+    const d=document.createElement("div");d.className="qcard";
+    d.innerHTML=`<div class="qnum">問 ${qi+1}　${mca[qi]===q.ans?"✅ 正解":"❌ 不正解"}</div><div class="qtxt">${q.q}</div><div class="opts">${q.opts.map((o,oi)=>{let cl="";if(oi===q.ans&&oi===mca[qi])cl="ok";else if(oi===mca[qi])cl="ng";else if(oi===q.ans)cl="sc";return`<div class="opt ${cl}"><span class="okey">${KEYS[oi]}</span><span class="otxt">${o}</span></div>`;}).join("")}</div><div class="expl on"><div class="explbl">📖 解説</div><div class="extxt">${q.exp}</div></div>`;
+    rv.appendChild(d);
+  });
+}
+
+function retry(){
+  mca=new Array(MC.length).fill(null);
+  esa=new Array(ESSAY.length).fill("");
+  done=false;
+  document.getElementById("rs").style.display="none";
+  document.getElementById("qs").style.display="block";
+  window.scrollTo(0,0);
+  build();
+}
+
+build();
+</script>
+</body>
+</html>
