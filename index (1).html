@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>理解度テスト｜ただしイケメンに限る</title>
+<style>
+:root{--bg:#faf9f7;--surface:#fff;--s2:#f4f3f0;--bd:rgba(0,0,0,.1);--bd2:rgba(0,0,0,.18);--tx:#1a1917;--tx2:#6b6860;--tx3:#9e9c98;--pu:#534AB7;--pl:#EEEDFE;--pd:#3C3489;--pt:#26215C;--gn:#0F6E56;--gl:#E1F5EE;--gt:#04342C;--rd:#A32D2D;--rl:#FCEBEB;--rt:#501313}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;padding:0 0 80px}
+.hd{background:var(--surface);border-bottom:.5px solid var(--bd);padding:20px 20px 16px;position:sticky;top:0;z-index:10}
+.ey{font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--pu);text-transform:uppercase;margin-bottom:4px}
+.ht{font-size:17px;font-weight:700;margin-bottom:10px}
+.pb{height:3px;background:var(--s2);border-radius:2px}
+.pf{height:3px;background:var(--pu);border-radius:2px;transition:width .4s}
+.pl{font-size:12px;color:var(--tx3);margin-top:6px;text-align:right}
+.mn{max-width:640px;margin:0 auto;padding:0 16px}
+.st{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.05em;color:var(--pt);background:var(--pl);padding:3px 10px;border-radius:20px;margin:28px 0 14px}
+.qc{background:var(--surface);border:.5px solid var(--bd);border-radius:14px;padding:20px;margin-bottom:12px}
+.qn{font-size:11px;font-weight:600;color:var(--tx3);margin-bottom:8px}
+.qt{font-size:15px;font-weight:600;line-height:1.65;margin-bottom:16px}
+.os{display:flex;flex-direction:column;gap:8px}
+.op{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border:.5px solid var(--bd);border-radius:10px;cursor:pointer;background:var(--bg);transition:border-color .15s,background .15s;-webkit-tap-highlight-color:transparent;user-select:none}
+.op:hover{border-color:var(--bd2);background:var(--s2)}
+.op.sl{border-color:var(--pu);background:var(--pl)}
+.op.ok{border-color:var(--gn);background:var(--gl)}
+.op.ng{border-color:var(--rd);background:var(--rl)}
+.op.sh{border-color:var(--gn);background:var(--gl)}
+.ok_{flex-shrink:0;width:24px;height:24px;border-radius:50%;border:.5px solid var(--bd2);background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--tx2);margin-top:1px}
+.op.sl .ok_{background:var(--pu);border-color:var(--pu);color:#fff}
+.op.ok .ok_{background:var(--gn);border-color:var(--gn);color:#fff}
+.op.ng .ok_{background:var(--rd);border-color:var(--rd);color:#fff}
+.op.sh .ok_{background:var(--gn);border-color:var(--gn);color:#fff}
+.ot{font-size:14px;line-height:1.55;padding-top:2px}
+.op.sl .ot{color:var(--pt);font-weight:500}
+.op.ok .ot{color:var(--gt);font-weight:500}
+.op.ng .ot{color:var(--rt)}
+.op.sh .ot{color:var(--gt);font-weight:500}
+.ex{display:none;margin-top:12px;padding:12px 14px;background:var(--s2);border-radius:10px;border-left:3px solid var(--pu)}
+.ex.on{display:block}
+.exl{font-size:11px;font-weight:700;color:var(--pu);letter-spacing:.05em;margin-bottom:5px}
+.ext{font-size:13px;line-height:1.7;color:var(--tx2)}
+.sw{padding:28px 16px 0;max-width:640px;margin:0 auto}
+.sb{width:100%;padding:16px;background:var(--pu);color:#fff;font-size:16px;font-weight:700;border:none;border-radius:12px;cursor:pointer;letter-spacing:.03em;transition:background .15s,transform .1s;font-family:inherit}
+.sb:hover{background:var(--pd)}
+.sb:active{transform:scale(.98)}
+.sb:disabled{background:var(--tx3);cursor:not-allowed}
+#rs{display:none}
+.rh{text-align:center;padding:40px 20px 28px;max-width:640px;margin:0 auto}
+.sr{width:120px;height:120px;margin:0 auto 20px;position:relative}
+.sr svg{transform:rotate(-90deg)}
+.sn_{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:26px;font-weight:800;color:var(--pu);line-height:1;text-align:center}
+.sl_{font-size:11px;color:var(--tx3);margin-top:3px}
+.rmsg{font-size:20px;font-weight:700;margin-bottom:8px}
+.rsub{font-size:14px;color:var(--tx2);line-height:1.7;margin-bottom:24px}
+.rg{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;max-width:640px;margin:0 auto 24px;padding:0 16px}
+.rc{background:var(--surface);border:.5px solid var(--bd);border-radius:8px;padding:8px 4px;text-align:center}
+.rn{font-size:11px;color:var(--tx3);margin-bottom:3px}
+.rb{display:block;width:calc(100% - 32px);max-width:640px;margin:0 auto;padding:14px;background:transparent;color:var(--pu);font-size:15px;font-weight:600;border:1.5px solid var(--pu);border-radius:12px;cursor:pointer;text-align:center;transition:background .15s;font-family:inherit}
+.rb:hover{background:var(--pl)}
+</style>
+</head>
+<body>
+<div id="qs">
+  <div class="hd">
+    <div class="ey">理解度テスト</div>
+    <div class="ht">ただしイケメンに限る の事実</div>
+    <div class="pb"><div class="pf" id="pf" style="width:5%"></div></div>
+    <div class="pl" id="pl_">0 / 20 問回答済み</div>
+  </div>
+  <div class="mn" id="qc"></div>
+  <div class="sw"><button class="sb" id="sb" onclick="doSubmit()" disabled>採点する（あと20問）</button></div>
+</div>
+
+<div id="rs">
+  <div class="rh">
+    <div class="sr">
+      <svg width="120" height="120" viewBox="0 0 120 120">
+        <circle cx="60" cy="60" r="50" fill="none" stroke="#EEEDFE" stroke-width="10"/>
+        <circle cx="60" cy="60" r="50" fill="none" stroke="#534AB7" stroke-width="10" stroke-dasharray="314" stroke-dashoffset="314" stroke-linecap="round" id="rc_"/>
+      </svg>
+      <div class="sn_"><span id="sn_">0</span><div class="sl_">/ 20</div></div>
+    </div>
+    <div class="rmsg" id="rmsg"></div>
+    <div class="rsub" id="rsub"></div>
+  </div>
+  <div class="rg" id="rg_"></div>
+  <button class="rb" onclick="doRetry()">もう一度チャレンジする</button>
+  <div class="mn" id="rvc" style="margin-top:32px"></div>
+</div>
+
+<script>
+const MC=[
+  {s:"第1部：慈悲的差別と魅力の正体",q:"問1：「慈悲的差別（benevolent sexism）」の具体的な行動例としてソースに挙げられているものはどれですか？",o:["女性に男性と同じ重労働を割り当てる","女性のコートを預かったり、車の扉を開けたりする","女性の昇進を実力のみで判断する","デートの費用を完全に折半にする"],a:1,e:"慈悲的差別の典型例は「コートを預かる」「扉を開ける」など一見紳士的な行動。根底には「女性は守られるべき存在」という前提がある。"},
+  {s:"第1部：慈悲的差別と魅力の正体",q:"問2：フェミニズム的なイデオロギーを内面化している女性であっても、慈悲的差別を行う男性をどう感じるとされていますか？",o:["思想の敵として激しく軽蔑する","魅力的だと感じてしまう","全く何も感じない","自分の権利を侵害されていると即座に気づく"],a:1,e:"フェミニスト的な価値観を持つ女性でも、慈悲的差別を行う男性に「魅力」を感じてしまう。これが資料の示す矛盾点の核心。"},
+  {s:"第1部：慈悲的差別と魅力の正体",q:"問3：慈悲的差別とはどのような前提に基づいた「甘やかし」であると説明されていますか？",o:["女性を男性よりも優れた存在と見なすこと","女性を男性と完全に対等な存在と見なすこと","女性を男性よりも一段劣った存在と見なすこと","女性を社会のリーダーとして育成すること"],a:2,e:"慈悲的差別の前提は「女性は男性より一段劣った存在」。だからこそ「守ってあげる」という甘やかしが成立する。"},
+  {s:"第1部：慈悲的差別と魅力の正体",q:"問4：統計的に裏付けられた「不都合な真実」が女性の直感的理解に反してしまう主な理由は何ですか？",o:["統計データ自体が間違っているから","女性には、魅力的な男性の性差別的言動を検出できなくなる認知的フレームワークがあるから","現代の女性は教育水準が高すぎるから","男性が女性の前で完璧に自分を偽っているから"],a:1,e:"女性の脳には「魅力的な男性の性差別的言動を差別と認識しにくくする」認知的フレームワークが存在する。これが「不都合な真実」を見えにくくする。"},
+  {s:"第1部：慈悲的差別と魅力の正体",q:"問5：「暴力的な傾向が強い男性」に関する研究結果として言及されている事実はどれですか？",o:["結婚生活が長く続く傾向にある","社会的な成功を収めやすい","セックスパートナーが多い","知能指数が非常に高い"],a:2,e:"研究によると、暴力的傾向の強い男性はセックスパートナーが多い傾向にある。「悪い男がモテる」という現象の統計的裏付け。"},
+  {s:"第2部：認知的バイアスと再解釈",q:"問6：魅力的な男性が横暴な振る舞いをした際、女性はそれをどのように「再解釈」するとされていますか？",o:["「自分への攻撃」と捉え、警察に通報する","「頼もしさ」「男らしさ」として肯定的に評価する","「育ちの悪さ」として冷ややかに見る","「ストレスが溜まっているのだ」と論理的に分析する"],a:1,e:"魅力的な男性の横暴さは「頼もしさ」「男らしさ」と再解釈される。誰がやるかによって受け取られ方が180度変わる。"},
+  {s:"第2部：認知的バイアスと再解釈",q:"問7：性的魅力の高い男性による抑圧的な振る舞いは、女性にどう認識されやすいですか？",o:["女性蔑視や暴力だと認識されにくい","即座に差別として告発される","男性全体の評価を下げる原因として嫌われる","知的な戦略であると高く評価される"],a:0,e:"高スペック・イケメン男性の抑圧的行動は、女性蔑視や暴力として認識されにくい。これが「ただしイケメンに限る」の本質。"},
+  {s:"第2部：認知的バイアスと再解釈",q:"問8：「EVIL相互関係」と表現されているのはどのような現象ですか？",o:["男女が互いに憎しみ合い、社会が崩壊すること","モテる男が女性蔑視的になり、女性蔑視的な男がモテるという関係","非モテ男性がフェミニストを攻撃し続けること","権力者が弱者を搾取し続ける経済的構造"],a:1,e:"EVIL相互関係とは「モテる男ほど女性蔑視的になり、女性蔑視的な男ほどモテる」という循環構造のこと。"},
+  {s:"第2部：認知的バイアスと再解釈",q:"問9：性的魅力と「人間的な善性」をイコールで結びつけて考えるバイアスについて、ソースはどう述べていますか？",o:["男性に顕著に見られるバイアスである","女性にきわめて顕著に見られるバイアスである","高齢者にのみ見られる古い価値観である","科学的に正しい判断基準である"],a:1,e:"「魅力的＝善い人」というバイアスは女性に特に強く見られる。これが認知的フレームワークの一部をなしている。"},
+  {s:"第2部：認知的バイアスと再解釈",q:"問10：魅力的な男性が加害行為をした際に女性が行う「責任転嫁」とはどのようなものですか？",o:["「社会の構造が悪い」と主張する","「被害者にも落ち度があった」と主張する","「あいつは本当はモテ男ではなく非モテだったのだ」と言い換える","「自分も共犯だ」と名乗り出る"],a:2,e:"魅力的な男性が加害した場合、「実はあいつはモテ男じゃなかった」と事後的に再定義することで、自分の判断ミスを回避しようとする。"},
+  {s:"第3部：非モテと男女平等の現実",q:"問11：性的魅力の低い男性（非モテ）がわずかでも差別的な言動をした場合、女性はどう反応しますか？",o:["相手に興味がないので聞き流す","ポジティブに再解釈してあげる","激しい嫌悪感と怒りを抱く","優しく教育し直そうとする"],a:2,e:"非モテ男性のわずかな差別的言動に対しては、再解釈モジュールが作動せず、激しい嫌悪・怒りが生じる。"},
+  {s:"第3部：非モテと男女平等の現実",q:"問12：慶応大卒イケメンのわいせつ事件と、引きこもりオタクの二次元イラストへの反応の差は何によって説明されますか？",o:["犯罪の法的な重さの差","性的魅力が加害評価の絶対値を歪めてしまう効力","メディアの報道の仕方の違い","教育背景の有無"],a:1,e:"法的には前者のほうが重大なはずだが、性的魅力の差によって加害評価の絶対値が歪む。「ただしイケメンに限る」の具体例。"},
+  {s:"第3部：非モテと男女平等の現実",q:"問13：本当の意味で「男女平等」を実践し、女性を特別扱いしない男性は女性からどう評価される傾向にありますか？",o:["「誠実で素晴らしい人」と絶賛される","「冷たい人」「女ぎらい」などと陰口を叩かれる","恋愛対象として最も人気が出る","会社のリーダーとして推薦される"],a:1,e:"真の男女平等を実践すると、慈悲的差別がないため「冷たい」「女嫌い」と評される皮肉な現実がある。"},
+  {s:"第3部：非モテと男女平等の現実",q:"問14：女性を神聖視し、人格を尊重しようとする「やさしい非モテ男」について、ソースはどう評していますか？",o:["最終的には報われる存在である","「正しい」がゆえに女にモテず、キモがられるという現実を見れていない","現代社会において最も必要な人材である","女性から密かに尊敬されている"],a:1,e:"やさしい非モテは「正しい」が、その正しさゆえに現実の女性心理と噛み合わず、モテない・キモがられるという残酷な構造がある。"},
+  {s:"第3部：非モテと男女平等の現実",q:"問15：非モテ男性が「いつか自分のやさしさに気づいてくれる」と信じていることを、ソースは何と呼んでいますか？",o:["崇高な理想","捨てきれない幻想","確実な未来","騎士道精神"],a:1,e:"「いつか気づいてくれる」という信念はソースでは「捨てきれない幻想」と呼ばれている。モテ男はこの幻想を捨てた人たちだ。"},
+  {s:"第4部：具体例と結論",q:"問16：刺青があり女性に暴力を振るうような男たちの周囲にはどのような状況がありましたか？",o:["女性が一人も寄り付かなかった","常に彼らを熱心に愛する女性が一人以上いた","警察が常に監視していた","男性同士で集まり、女性を排除していた"],a:1,e:"荒くれ者の周囲には、常に彼らを愛する女性が存在した。これが理論の現実での裏付けとして紹介されている。"},
+  {s:"第4部：具体例と結論",q:"問17：犯罪を繰り返す荒くれ者の帰りを待つ女性たちは、彼らのことをどう表現していましたか？",o:["「本当はいい人。誤解されやすいだけ」","「お金をくれるから仕方がなく」","「恐怖で支配されているだけ」","「いつか改心してくれると信じている」"],a:0,e:"「本当はいい人、誤解されやすいだけ」という言葉は、認知的フレームワークによる典型的な再解釈の実例。"},
+  {s:"第4部：具体例と結論",q:"問18：「EVIL四段活用」の4番目、非モテに関する記述として正しいものはどれですか？",o:["非モテは無害であれば女性から好かれる","非モテは女性への性欲を持っているだけで「加害行為」と認識されることがある","非モテは努力次第で慈悲的差別を使いこなせる","非モテの存在は女性の社会進出を助けている"],a:1,e:"EVIL四段活用の非モテ段階では、性欲を持つだけで加害者扱いされうる。性的魅力の有無が評価の非対称性を生む極端な例。"},
+  {s:"第4部：具体例と結論",q:"問19：モテ男になっていく男性は、女性に対してどのような認識を持つに至った人たちですか？",o:["女性は無謬で神聖な存在であるという認識","女性は特定の認知的フレームワークを備えた生物であるという認識","女性は論理的で知的な存在であるという認識","女性は教育によって変えられるという認識"],a:1,e:"モテ男は女性を「神聖な存在」ではなく、「認知的フレームワークを持つ生物」と捉えている。現実直視が出発点。"},
+  {s:"第4部：具体例と結論",q:"問20：「※ただしイケメンに限る」の真相として、ソースが提示している結論は何ですか？",o:["外見さえ良ければ性格はどうでも良いという意味","性的魅力が、性差別や加害行為の評価をポジティブに歪めてしまうという仕組み","美形は遺伝子的に優れているという事実","イケメンは法律によって守られているという風刺"],a:1,e:"「ただしイケメンに限る」の本質は、性的魅力が差別・加害行為の評価をポジティブに歪めるメカニズム。単なる外見の話ではない。"}
+];
+
+const KS=["A","B","C","D"];
+let mca=new Array(MC.length).fill(null);
+let submitted=false;
+
+function upd(){
+  const n=mca.filter(a=>a!==null).length;
+  document.getElementById("pf").style.width=Math.max(5,Math.round(n/MC.length*100))+"%";
+  document.getElementById("pl_").textContent=n+" / "+MC.length+" 問回答済み";
+  const btn=document.getElementById("sb");
+  btn.disabled=n<MC.length;
+  btn.textContent=n<MC.length?"採点する（あと"+(MC.length-n)+"問）":"採点する ✓";
+}
+
+function build(){
+  const c=document.getElementById("qc");c.innerHTML="";
+  let ls="";
+  MC.forEach((q,qi)=>{
+    if(q.s!==ls){const t=document.createElement("div");t.className="st";t.textContent=q.s;c.appendChild(t);ls=q.s;}
+    const d=document.createElement("div");d.className="qc";
+    d.innerHTML=`<div class="qn">問 ${qi+1}</div><div class="qt">${q.q}</div><div class="os" id="o${qi}">${q.o.map((o,oi)=>`<div class="op" id="o${qi}_${oi}" onclick="pick(${qi},${oi})"><span class="ok_">${KS[oi]}</span><span class="ot">${o}</span></div>`).join("")}</div><div class="ex" id="ex${qi}"><div class="exl">📖 解説</div><div class="ext">${q.e}</div></div>`;
+    c.appendChild(d);
+  });
+  upd();
+}
+
+function pick(qi,oi){
+  if(submitted)return;
+  mca[qi]=oi;
+  MC[qi].o.forEach((_,i)=>document.getElementById("o"+qi+"_"+i).className="op"+(i===oi?" sl":""));
+  upd();
+}
+
+function doSubmit(){
+  submitted=true;
+  let sc=0;
+  MC.forEach((q,qi)=>{
+    const ua=mca[qi];
+    MC[qi].o.forEach((_,oi)=>{
+      const el=document.getElementById("o"+qi+"_"+oi);
+      el.className="op";
+      if(oi===q.a&&oi===ua){el.classList.add("ok");sc++;}
+      else if(oi===ua){el.classList.add("ng");}
+      else if(oi===q.a){el.classList.add("sh");}
+    });
+    document.getElementById("ex"+qi).classList.add("on");
+  });
+  showResult(sc);
+}
+
+function showResult(sc){
+  document.getElementById("qs").style.display="none";
+  document.getElementById("rs").style.display="block";
+  window.scrollTo(0,0);
+  document.getElementById("sn_").textContent=sc;
+  document.getElementById("rc_").style.strokeDashoffset=314*(1-sc/MC.length);
+  const msgs=sc>=18?["完璧な理解度です！","資料の核心をしっかり掴めています。コーチとの対話でさらに深めましょう。"]:sc>=14?["よく理解できています！","間違えた問題の解説をもう一度確認しましょう。"]:sc>=10?["基本は押さえています。","解説を見ながら、誤解しやすい箇所を整理しましょう。"]:["もう一度資料を読み直しましょう。","解説を参考に各概念を整理してください。"];
+  document.getElementById("rmsg").textContent=msgs[0];
+  document.getElementById("rsub").textContent=msgs[1];
+  const rg=document.getElementById("rg_");rg.innerHTML="";
+  MC.forEach((q,qi)=>{
+    const c=document.createElement("div");c.className="rc";
+    c.innerHTML=`<div class="rn">問${qi+1}</div><div>${mca[qi]===q.a?"✅":"❌"}</div>`;
+    rg.appendChild(c);
+  });
+  const rv=document.getElementById("rvc");
+  rv.innerHTML=`<div style="font-size:15px;font-weight:700;margin-bottom:16px;padding:0 0 12px;border-bottom:.5px solid var(--bd)">解答の見直し</div>`;
+  let ls="";
+  MC.forEach((q,qi)=>{
+    if(q.s!==ls){const t=document.createElement("div");t.className="st";t.textContent=q.s;rv.appendChild(t);ls=q.s;}
+    const d=document.createElement("div");d.className="qc";
+    d.innerHTML=`<div class="qn">問 ${qi+1}　${mca[qi]===q.a?"✅ 正解":"❌ 不正解"}</div><div class="qt">${q.q}</div><div class="os">${q.o.map((o,oi)=>{let cl="";if(oi===q.a&&oi===mca[qi])cl="ok";else if(oi===mca[qi])cl="ng";else if(oi===q.a)cl="sh";return`<div class="op ${cl}"><span class="ok_">${KS[oi]}</span><span class="ot">${o}</span></div>`;}).join("")}</div><div class="ex on"><div class="exl">📖 解説</div><div class="ext">${q.e}</div></div>`;
+    rv.appendChild(d);
+  });
+}
+
+function doRetry(){
+  mca=new Array(MC.length).fill(null);
+  submitted=false;
+  document.getElementById("rs").style.display="none";
+  document.getElementById("qs").style.display="block";
+  window.scrollTo(0,0);
+  build();
+}
+
+build();
+</script>
+</body>
+</html>
